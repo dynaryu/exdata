@@ -21,24 +21,23 @@ SCC <- readRDS("../data/Source_Classification_Code.rds")
 #}
 
 total_emission = aggregate(NEI$Emissions, by=list(NEI$year), sum)
+names(total_emission) = c("year","total")
 
 # Yes.
 png('./plot1.png')
-plot(year_vector, total_emissions, xlab='Year', ylab='Total emission')
+plot(total~year, total_emission, xlab='Year', ylab='Total emission')
 dev.off()
 
 # 2. # Have total emissions from PM2.5 decreased in the Baltimore City, Maryland (fips == "24510") from 1999 to 2008? Use the base plotting system to make a plot answering this question.
 Baltimore = NEI[NEI$fips=="24510",]
 total_emission_Baltimore = aggregate(Baltimore$Emissions, by=list(Baltimore$year), sum)
-
+names(total_emission_Baltimore) = c("year","total")
 
 # Yes.
 png('./plot2.png')
-plot(year_vector, total_emissions, xlab='Year', ylab='Total emission')
+plot(total~year, total_emission_Baltimore, xlab='Year', ylab='Total emission')
 dev.off()
 
 # Of the four types of sources indicated by the type (point, nonpoint, onroad, nonroad) variable, which of these four sources have seen decreases in emissions from 1999–2008 for Baltimore City? Which have seen increases in emissions from 1999–2008? Use the ggplot2 plotting system to make a plot answer this question.
-Baltimore = NEI[NEI$fips=="24510",]
-
-aggregate(Baltimore$Emissions, by=list(Baltimore$year, Baltimore$type), sum)
-
+total_emission_by_type_year = aggregate(Baltimore$Emissions, by=list(Baltimore$year, Baltimore$type), sum)
+names(total_emission_by_type_year) <- c("year", "type", "total")
